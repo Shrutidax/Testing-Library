@@ -43,4 +43,33 @@ describe("Test the login component", () => {
         expect(email.value).toMatch("")
         expect(password.value).toMatch("")
     })
+
+    test("Submit button should successfully submit the form" , () => {
+        render(<Login/>)
+        const submitBtn = screen.getByTestId("submit")
+        const email = screen.getByPlaceholderText("Enter email")
+        const password = screen.getByPlaceholderText("Password")
+
+        userEvent.type(email ,"shruti@gmail.com")
+        userEvent.type(password, "1234")
+        userEvent.click(submitBtn);
+
+        const info = screen.getByText("shruti@gmail.com")
+        expect(info).toBeInTheDocument();
+    })
+
+    test("Should display error" , () => {
+        render(<Login/>)
+        const submitBtn = screen.getByTestId("submit")
+        const email = screen.getByPlaceholderText("Enter email")
+        const password = screen.getByPlaceholderText("Password")
+
+        userEvent.type(email ,"shruti.com")
+        userEvent.type(password, "1234")
+        userEvent.click(submitBtn);
+
+        const errorMessage = screen.getByText("Email is not valid")
+        expect(errorMessage).toBeInTheDocument();
+    })
+
 })
