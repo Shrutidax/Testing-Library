@@ -1,4 +1,4 @@
-import { render,screen } from "@testing-library/react";
+import { fireEvent, getByTestId, render,screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import Login, { validateEmail } from "../Login";
 
@@ -22,7 +22,7 @@ describe("Test the login component", () => {
     test("Email input field should accept email" , () => {
         render(<Login/>)
         const email = screen.getByPlaceholderText("Enter email")
-        userEvent.type(email , "shrutisahu")
+        userEvent.type(email , "shrutisahu@gmail.com")
         expect(email.value).toMatch("shrutisahu@gmail.com");
     })
 
@@ -31,5 +31,16 @@ describe("Test the login component", () => {
         const password = screen.getByPlaceholderText("Password");
         expect(password.type).toBe("password")
         expect(password).toHaveAttribute("type", "password")
+    })
+
+    test("Reset button should be able to reset the form" ,() => {
+        const {getByTestId} = render(<Login/>)
+        const resetBtn = getByTestId("reset")
+        const email = screen.getByPlaceholderText("Enter email")
+        const password = screen.getByPlaceholderText("Password")
+
+        fireEvent.click(resetBtn)
+        expect(email.value).toMatch("")
+        expect(password.value).toMatch("")
     })
 })
